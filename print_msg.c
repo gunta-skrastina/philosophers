@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 11:48:21 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/03/04 15:57:18 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/03/05 03:31:44 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	print_msg(t_philo *philo, char *msg, int i)
 			printf("%lld %d died\n", ft_get_time() - info->start, philo->id);
 		}
 	}
-	else if (check_if_done(philo) == 1)
+	else if (info->t_must_eat > 0 && check_if_done(philo) == 1)
 	{
 		pthread_mutex_unlock(&info->dying);
 		return (2);

@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 16:17:00 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/03/04 12:32:00 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/03/05 03:29:52 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	main(int argc, char *argv[])
 		info.t_must_eat = ft_atoi(argv[5]);
 	info.start = ft_get_time();
 	info.dead = 0;
+	info.done = 0;
 	pthread_mutex_init(&info.dying, NULL);
 	philo(&info);
 	free(info.philo);
