@@ -6,11 +6,13 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 11:48:21 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/03/05 03:31:44 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/03/09 15:44:10 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static int	die_while(int i, t_philo *philo, t_info *info);
 
 int	print_msg(t_philo *philo, char *msg, int i)
 {
@@ -26,6 +28,14 @@ int	print_msg(t_philo *philo, char *msg, int i)
 	printf("%lld %d %s\n", ft_get_time() - info->start, philo->id, msg);
 	if (i == 1)
 		philo->times_eaten++;
+	if (die_while(i, philo, info) > 0)
+		return (2);
+	pthread_mutex_unlock(&info->dying);
+	return (0);
+}
+
+static int	die_while(int i, t_philo *philo, t_info *info)
+{
 	if ((i == 1 && ft_get_time() - philo->last_meal
 			+ info->tt_eat > info->tt_die && info->dead == 0)
 		|| (i == 2 && ft_get_time() - philo->last_meal
@@ -43,6 +53,5 @@ int	print_msg(t_philo *philo, char *msg, int i)
 		pthread_mutex_unlock(&info->dying);
 		return (2);
 	}
-	pthread_mutex_unlock(&info->dying);
 	return (0);
 }
