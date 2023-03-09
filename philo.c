@@ -6,11 +6,13 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 11:49:44 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/03/09 04:31:35 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/03/09 15:36:54 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static int	take_forks(t_philo *philo);
 
 void	philo(t_info *info)
 {
@@ -65,19 +67,8 @@ void	*philosophers(void *arg)
 
 int	eat(t_philo *philo)
 {
-	pthread_mutex_lock(philo->r_fork);
-	if (print_msg(philo, "has taken a fork", 0))
-	{
-		pthread_mutex_unlock(philo->r_fork);
+	if (take_forks(philo) == 1)
 		return (1);
-	}
-	pthread_mutex_lock(philo->l_fork);
-	if (print_msg(philo, "has taken a fork", 0))
-	{
-		pthread_mutex_unlock(philo->r_fork);
-		pthread_mutex_unlock(philo->l_fork);
-		return (1);
-	}
 	if (print_msg(philo, "is eating", 1))
 	{
 		pthread_mutex_unlock(philo->r_fork);
@@ -105,5 +96,23 @@ int	check_if_done(t_philo *philo)
 		return (1);
 	}
 	pthread_mutex_unlock(&philo->info->done_mutex);
+	return (0);
+}
+
+static int	take_forks(t_philo *philo)
+{
+	pthread_mutex_lock(philo->r_fork);
+	if (print_msg(philo, "has taken a fork", 0))
+	{
+		pthread_mutex_unlock(philo->r_fork);
+		return (1);
+	}
+	pthread_mutex_lock(philo->l_fork);
+	if (print_msg(philo, "has taken a fork", 0))
+	{
+		pthread_mutex_unlock(philo->r_fork);
+		pthread_mutex_unlock(philo->l_fork);
+		return (1);
+	}
 	return (0);
 }
