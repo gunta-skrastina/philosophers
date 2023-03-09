@@ -6,7 +6,7 @@
 /*   By: gskrasti <gskrasti@students.42wolfsburg    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 11:49:44 by gskrasti          #+#    #+#             */
-/*   Updated: 2023/03/04 14:52:01 by gskrasti         ###   ########.fr       */
+/*   Updated: 2023/03/09 04:31:35 by gskrasti         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,23 @@ int	eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->r_fork);
 	if (print_msg(philo, "has taken a fork", 0))
+	{
+		pthread_mutex_unlock(philo->r_fork);
 		return (1);
+	}
 	pthread_mutex_lock(philo->l_fork);
 	if (print_msg(philo, "has taken a fork", 0))
+	{
+		pthread_mutex_unlock(philo->r_fork);
+		pthread_mutex_unlock(philo->l_fork);
 		return (1);
+	}
 	if (print_msg(philo, "is eating", 1))
+	{
+		pthread_mutex_unlock(philo->r_fork);
+		pthread_mutex_unlock(philo->l_fork);
 		return (1);
+	}
 	do_while(philo->info->tt_eat);
 	pthread_mutex_unlock(philo->r_fork);
 	pthread_mutex_unlock(philo->l_fork);
